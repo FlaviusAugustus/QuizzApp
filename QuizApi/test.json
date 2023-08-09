@@ -1,0 +1,17 @@
+{
+  "Name": "quiz",
+  "Questions": 
+  [
+    {
+      "Content": "question",
+      "CorrectAnwser": "123",
+      "WrongAnswers": ["12", "3"]
+    },
+    {
+      "Content": "question",
+      "CorrectAnwser": "678",
+      "WrongAnswers": ["12", "3"]
+    }
+  ]
+      
+}

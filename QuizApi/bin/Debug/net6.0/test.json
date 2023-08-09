@@ -1,0 +1,9 @@
+{
+  "Name": "quiz",
+  "Questions": 
+    [{
+      "Content": "question",
+      "CorrectAnwser": "123",
+      "WrongAnswers": ["12", "3"]
+      }]
+}
