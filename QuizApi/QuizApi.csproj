@@ -16,6 +16,8 @@
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.10" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="Tomlyn" Version="0.16.2" />
+        <PackageReference Include="YamlDotNet" Version="13.1.1" />
     </ItemGroup>
 
 </Project>

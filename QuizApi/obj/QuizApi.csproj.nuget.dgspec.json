@@ -63,6 +63,14 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
+            },
+            "Tomlyn": {
+              "target": "Package",
+              "version": "[0.16.2, )"
+            },
+            "YamlDotNet": {
+              "target": "Package",
+              "version": "[13.1.1, )"
             }
           },
           "imports": [

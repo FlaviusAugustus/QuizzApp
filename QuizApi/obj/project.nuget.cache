@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CYrpiIFoxHpP0h4Rel3wHDHc8kcF83/iYpJ8/hEBt3K5HegtRhTIbPMBINNsdxFNWpTZ6lqFokE1wa/H9FUSkg==",
+  "dgSpecHash": "ITw7nVD02cSZS89H5NojRZpBRwiTziTXgKd6httZsaWawSjnXD+vRiWePL5bpY4YgSNhsc6JBId3RAVqrJgSjw==",
   "success": true,
   "projectFilePath": "C:\\Users\\gracj\\RiderProjects\\QuizApi\\QuizApi\\QuizApi.csproj",
   "expectedPackageFiles": [
@@ -41,7 +41,9 @@
     "C:\\Users\\gracj\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
     "C:\\Users\\gracj\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\gracj\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
-    "C:\\Users\\gracj\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512"
+    "C:\\Users\\gracj\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512",
+    "C:\\Users\\gracj\\.nuget\\packages\\tomlyn\\0.16.2\\tomlyn.0.16.2.nupkg.sha512",
+    "C:\\Users\\gracj\\.nuget\\packages\\yamldotnet\\13.1.1\\yamldotnet.13.1.1.nupkg.sha512"
   ],
   "logs": []
 }

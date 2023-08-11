@@ -76,3 +76,6 @@ C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\runtimes\win-x86\n
 C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\test.json
 C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\AutoMapper.dll
 C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\Tomlyn.dll
+C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\YamlDotNet.dll
+C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\wrong.json

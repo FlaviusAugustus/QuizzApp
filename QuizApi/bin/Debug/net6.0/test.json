@@ -1,9 +1,14 @@
 {
   "Name": "quiz",
-  "Questions": 
-    [{
-      "Content": "question",
-      "CorrectAnwser": "123",
-      "WrongAnswers": ["12", "3"]
-      }]
+  "FlashCards": 
+  [
+    {
+      "Question": "question",
+      "Answer": "123"
+    },
+    {
+      "Question": "question",
+      "Answer": "678"
+    }
+  ]
 }

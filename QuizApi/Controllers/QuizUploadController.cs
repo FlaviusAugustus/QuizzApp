@@ -2,6 +2,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuizApi.Exceptions;
+using QuizApi.Services;
 
 namespace QuizApi.Controllers;
 
@@ -17,7 +19,7 @@ public class QuizUploadController : ControllerBase
     [HttpGet]
     public IActionResult GetAllQuizzes()
     {
-        var query = _context.Quizzes.Include(x => x.Questions);
+        var query = _context.Sets.Include(x => x.FlashCards);
         return Ok(query);
     }
 
@@ -25,7 +27,7 @@ public class QuizUploadController : ControllerBase
     [Route("/{id:int}")]
     public async Task<IActionResult> GetQuizById(int id)
     {
-        var quiz = await _context.Quizzes.FindAsync(id);
+        var quiz = await _context.Sets.FindAsync(id);
         if (quiz is null) 
         {
             return NotFound();
@@ -36,17 +38,18 @@ public class QuizUploadController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> UploadQuiz(IFormFile file)
     {
-        var json = await JsonSerializer.DeserializeAsync<QuizDto>(file.OpenReadStream());
-        if (json is null) 
+        FlashCardSetDto model;
+        try
         {
-            return BadRequest();
+            model = ParserFactory<FlashCardSetDto>.GetParser(file)
+                .Parse();
         }
-        await _context.AddAsync(json);
+        catch (IncorrectFileContentException e)
+        {
+            return BadRequest(e);
+        }
+        _context.Add(model);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetAllQuizzes), json);
+        return CreatedAtAction(nameof(GetAllQuizzes), model);
     }
-
-    
-    
-
 }

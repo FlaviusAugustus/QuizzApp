@@ -1,0 +1,7 @@
+﻿---
+Name: quiz
+FlashCards:
+  - Question: question
+    Answer: '123'
+  - Question: question
+    Answer: '678'

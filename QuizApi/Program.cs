@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using QuizApi;
+using QuizApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +19,8 @@ builder.Services.AddSwaggerGen();
 
 var configuration = new MapperConfiguration(config =>
 {
-    config.CreateMap<QuestionDto, Question>();
-    config.CreateMap<QuizDto, Quiz>();
+    config.CreateMap<FlashCardDto, FlashCard>();
+    config.CreateMap<FlashCardSetDto, FlashCardSet>();
 });
 var mapper = configuration.CreateMapper();
 
@@ -32,6 +33,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.ConfigureExceptionHandler();
 
 app.UseHttpsRedirection();
 
