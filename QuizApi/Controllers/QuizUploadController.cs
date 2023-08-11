@@ -44,9 +44,9 @@ public class QuizUploadController : ControllerBase
             model = ParserFactory<FlashCardSetDto>.GetParser(file)
                 .Parse();
         }
-        catch (IncorrectFileContentException e)
+        catch (IncorrectFileContentException)
         {
-            return BadRequest(e);
+            return BadRequest();
         }
         _context.Add(model);
         await _context.SaveChangesAsync();
