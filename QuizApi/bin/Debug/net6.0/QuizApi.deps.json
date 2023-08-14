@@ -13,6 +13,8 @@
           "Microsoft.EntityFrameworkCore": "7.0.10",
           "Microsoft.EntityFrameworkCore.Design": "7.0.10",
           "Microsoft.EntityFrameworkCore.Sqlite": "7.0.10",
+          "Serilog": "3.0.2-dev-02044",
+          "Serilog.Sinks.Console": "4.2.0-dev-00918",
           "Swashbuckle.AspNetCore": "6.5.0",
           "Tomlyn": "0.16.2",
           "YamlDotNet": "13.1.1"
@@ -263,6 +265,25 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {
             "assemblyVersion": "2.2.0.0",
             "fileVersion": "2.2.1.1"
+          }
+        }
+      },
+      "Serilog/3.0.2-dev-02044": {
+        "runtime": {
+          "lib/net6.0/Serilog.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "3.0.2.0"
+          }
+        }
+      },
+      "Serilog.Sinks.Console/4.2.0-dev-00918": {
+        "dependencies": {
+          "Serilog": "3.0.2-dev-02044"
+        },
+        "runtime": {
+          "lib/net5.0/Serilog.Sinks.Console.dll": {
+            "assemblyVersion": "4.2.0.0",
+            "fileVersion": "4.2.0.0"
           }
         }
       },
@@ -696,6 +717,20 @@
       "sha512": "sha512-KZYeKBET/2Z0gY1WlTAK7+RHTl7GSbtvTLDXEZZojUdAPqpQNDL6tHv7VUpqfX5VEOh+uRGKaZXkuD253nEOBQ==",
       "path": "mono.texttemplating/2.2.1",
       "hashPath": "mono.texttemplating.2.2.1.nupkg.sha512"
+    },
+    "Serilog/3.0.2-dev-02044": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Hu+akoisb/A4lOcVmiY3IAfo9Ke0uPyCTvNDJXnpJrV8Am2YCHBC4s+KPlxGWX2qDClFNJBvT+y/TZgN7uAkuA==",
+      "path": "serilog/3.0.2-dev-02044",
+      "hashPath": "serilog.3.0.2-dev-02044.nupkg.sha512"
+    },
+    "Serilog.Sinks.Console/4.2.0-dev-00918": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/DJRnXBLbf4B+XNOyToa40KYQLeaQgNCdx6Zi3yfp9ZQKYv5mvztggaEZ9TjAmysFm/1CgDhpkCoJy75okeCAA==",
+      "path": "serilog.sinks.console/4.2.0-dev-00918",
+      "hashPath": "serilog.sinks.console.4.2.0-dev-00918.nupkg.sha512"
     },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.4": {
       "type": "package",

@@ -3,14 +3,9 @@ using QuizApi.Exceptions;
 
 namespace QuizApi.Services;
 
-public class JsonParser<T> : IFileParser<T> where T : class, new()
+public class JsonParser<T> : IFileParser<T> where T : class
 {
-    public IFormFile File { get; set; }
-
-    public JsonParser(IFormFile file) =>
-        File = file;
-        
-    public T Parse()
+    public T Parse(IFormFile file)
     {
         T model;
         var options = new JsonSerializerOptions
@@ -21,12 +16,12 @@ public class JsonParser<T> : IFileParser<T> where T : class, new()
         };
         try
         {
-            using var reader = new StreamReader(File.OpenReadStream());
+            using var reader = new StreamReader(file.OpenReadStream());
             model = JsonSerializer.Deserialize<T>(reader.ReadToEnd(), options);
         }
-        catch (JsonException e)
+        catch (JsonException)
         {
-            throw new IncorrectFileContentException(File.FileName, e);
+            throw new IncorrectFileContentException(file.FileName);
         }
         return model ?? throw new IncorrectFileContentException();
     }

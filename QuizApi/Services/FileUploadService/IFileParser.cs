@@ -2,5 +2,5 @@
 
 public interface IFileParser<out T> where T : class
 {
-    public T Parse();
+    public T Parse(IFormFile file);
 }

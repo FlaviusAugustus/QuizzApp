@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ITw7nVD02cSZS89H5NojRZpBRwiTziTXgKd6httZsaWawSjnXD+vRiWePL5bpY4YgSNhsc6JBId3RAVqrJgSjw==",
+  "dgSpecHash": "U7MI/wPnlCnlzZgyNf4pojrs0Gja48loOxiFdrpSL1yXZi8dQviNkKlqf6uM+neu8sOAsYVen+fkwMyhieRDsg==",
   "success": true,
   "projectFilePath": "C:\\Users\\gracj\\RiderProjects\\QuizApi\\QuizApi\\QuizApi.csproj",
   "expectedPackageFiles": [
@@ -29,6 +29,8 @@
     "C:\\Users\\gracj\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
     "C:\\Users\\gracj\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\gracj\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\gracj\\.nuget\\packages\\serilog\\3.0.2-dev-02044\\serilog.3.0.2-dev-02044.nupkg.sha512",
+    "C:\\Users\\gracj\\.nuget\\packages\\serilog.sinks.console\\4.2.0-dev-00918\\serilog.sinks.console.4.2.0-dev-00918.nupkg.sha512",
     "C:\\Users\\gracj\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.4\\sqlitepclraw.bundle_e_sqlite3.2.1.4.nupkg.sha512",
     "C:\\Users\\gracj\\.nuget\\packages\\sqlitepclraw.core\\2.1.4\\sqlitepclraw.core.2.1.4.nupkg.sha512",
     "C:\\Users\\gracj\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.4\\sqlitepclraw.lib.e_sqlite3.2.1.4.nupkg.sha512",

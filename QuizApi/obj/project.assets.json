@@ -413,6 +413,35 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {}
         }
       },
+      "Serilog/3.0.2-dev-02044": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Serilog.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Serilog.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Serilog.Sinks.Console/4.2.0-dev-00918": {
+        "type": "package",
+        "dependencies": {
+          "Serilog": "2.10.0"
+        },
+        "compile": {
+          "lib/net5.0/Serilog.Sinks.Console.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net5.0/Serilog.Sinks.Console.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.1.4": {
         "type": "package",
         "dependencies": {
@@ -1543,6 +1572,53 @@
         "mono.texttemplating.nuspec"
       ]
     },
+    "Serilog/3.0.2-dev-02044": {
+      "sha512": "Hu+akoisb/A4lOcVmiY3IAfo9Ke0uPyCTvNDJXnpJrV8Am2YCHBC4s+KPlxGWX2qDClFNJBvT+y/TZgN7uAkuA==",
+      "type": "package",
+      "path": "serilog/3.0.2-dev-02044",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net462/Serilog.dll",
+        "lib/net462/Serilog.xml",
+        "lib/net471/Serilog.dll",
+        "lib/net471/Serilog.xml",
+        "lib/net5.0/Serilog.dll",
+        "lib/net5.0/Serilog.xml",
+        "lib/net6.0/Serilog.dll",
+        "lib/net6.0/Serilog.xml",
+        "lib/net7.0/Serilog.dll",
+        "lib/net7.0/Serilog.xml",
+        "lib/netstandard2.0/Serilog.dll",
+        "lib/netstandard2.0/Serilog.xml",
+        "lib/netstandard2.1/Serilog.dll",
+        "lib/netstandard2.1/Serilog.xml",
+        "serilog.3.0.2-dev-02044.nupkg.sha512",
+        "serilog.nuspec"
+      ]
+    },
+    "Serilog.Sinks.Console/4.2.0-dev-00918": {
+      "sha512": "/DJRnXBLbf4B+XNOyToa40KYQLeaQgNCdx6Zi3yfp9ZQKYv5mvztggaEZ9TjAmysFm/1CgDhpkCoJy75okeCAA==",
+      "type": "package",
+      "path": "serilog.sinks.console/4.2.0-dev-00918",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/net45/Serilog.Sinks.Console.dll",
+        "lib/net45/Serilog.Sinks.Console.xml",
+        "lib/net5.0/Serilog.Sinks.Console.dll",
+        "lib/net5.0/Serilog.Sinks.Console.xml",
+        "lib/netstandard1.3/Serilog.Sinks.Console.dll",
+        "lib/netstandard1.3/Serilog.Sinks.Console.xml",
+        "lib/netstandard2.0/Serilog.Sinks.Console.dll",
+        "lib/netstandard2.0/Serilog.Sinks.Console.xml",
+        "serilog.sinks.console.4.2.0-dev-00918.nupkg.sha512",
+        "serilog.sinks.console.nuspec"
+      ]
+    },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.4": {
       "sha512": "EWI1olKDjFEBMJu0+3wuxwziIAdWDVMYLhuZ3Qs84rrz+DHwD00RzWPZCa+bLnHCf3oJwuFZIRsHT5p236QXww==",
       "type": "package",
@@ -1944,6 +2020,8 @@
       "Microsoft.EntityFrameworkCore >= 7.0.10",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.10",
       "Microsoft.EntityFrameworkCore.Sqlite >= 7.0.10",
+      "Serilog >= 3.0.2-dev-02044",
+      "Serilog.Sinks.Console >= 4.2.0-dev-00918",
       "Swashbuckle.AspNetCore >= 6.5.0",
       "Tomlyn >= 0.16.2",
       "YamlDotNet >= 13.1.1"
@@ -2007,6 +2085,14 @@
           "Microsoft.EntityFrameworkCore.Sqlite": {
             "target": "Package",
             "version": "[7.0.10, )"
+          },
+          "Serilog": {
+            "target": "Package",
+            "version": "[3.0.2-dev-02044, )"
+          },
+          "Serilog.Sinks.Console": {
+            "target": "Package",
+            "version": "[4.2.0-dev-00918, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

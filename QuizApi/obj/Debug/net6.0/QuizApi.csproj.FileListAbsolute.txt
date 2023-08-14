@@ -79,3 +79,5 @@ C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\AutoMapper.Extensi
 C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\Tomlyn.dll
 C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\YamlDotNet.dll
 C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\wrong.json
+C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\Serilog.dll
+C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\Serilog.Sinks.Console.dll

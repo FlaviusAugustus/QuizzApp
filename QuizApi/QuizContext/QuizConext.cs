@@ -7,14 +7,12 @@ namespace QuizApi;
 
 public class QuizContext : DbContext
 {
-    private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
     public DbSet<FlashCardSet> Sets { get; set; }
 
-    public QuizContext(DbContextOptions<QuizContext> options, IConfiguration configuration,
+    public QuizContext(DbContextOptions<QuizContext> options,
                         IMapper mapper) : base(options)
     {
-        _configuration = configuration;
         _mapper = mapper;
     }
 
@@ -25,8 +23,7 @@ public class QuizContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    public void Add(FlashCardSetDto dto)
-    {
-        Sets.Add(_mapper.Map<FlashCardSetDto, FlashCardSet>(dto));
-    }
+    public async ValueTask<EntityEntry<FlashCardSet>> AddAsync(FlashCardSetDto dto) =>
+        await Sets.AddAsync(_mapper.Map<FlashCardSetDto, FlashCardSet>(dto));
+
 }
