@@ -1,9 +1,0 @@
-﻿Name = "quiz"
-
-[[FlashCards]]
-Question = "How to exit Vim?"
-Answer = ":! killall $(which vim) -9"
-
-[[FlashCards]]
-Question = "question"
-Answer = "678"

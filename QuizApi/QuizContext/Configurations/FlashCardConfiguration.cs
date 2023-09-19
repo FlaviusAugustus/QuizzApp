@@ -22,5 +22,8 @@ public class FlashCardConfiguration : IEntityTypeConfiguration<FlashCard>
             .Property(flashcard => flashcard.Answer)
             .HasMaxLength(100)
             .IsRequired();
+        builder
+            .Property(flashcard => flashcard.CreatedAt)
+            .IsRequired();
     }
 }

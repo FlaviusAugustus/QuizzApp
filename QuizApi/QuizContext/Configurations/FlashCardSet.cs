@@ -15,5 +15,8 @@ public class FlashCardSetConfiguration : IEntityTypeConfiguration<FlashCardSet>
             .HasKey(set => set.Id);
         builder
             .Ignore(set => set.FlashCardCount);
+        builder
+            .Property(set => set.CreatedAt)
+            .IsRequired(); 
     }
 }

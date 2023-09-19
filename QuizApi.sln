@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApi", "QuizApi\QuizApi.csproj", "{5ECC7DDA-0EBD-4506-890D-657A8FCAD59D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizApi.Tests", "QuizApi.Tests\QuizApi.Tests.csproj", "{2AAF6758-90EB-4325-83C5-C7158C53CAB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{5ECC7DDA-0EBD-4506-890D-657A8FCAD59D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ECC7DDA-0EBD-4506-890D-657A8FCAD59D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ECC7DDA-0EBD-4506-890D-657A8FCAD59D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AAF6758-90EB-4325-83C5-C7158C53CAB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AAF6758-90EB-4325-83C5-C7158C53CAB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AAF6758-90EB-4325-83C5-C7158C53CAB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AAF6758-90EB-4325-83C5-C7158C53CAB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

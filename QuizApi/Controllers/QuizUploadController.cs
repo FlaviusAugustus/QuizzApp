@@ -1,6 +1,8 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuizApi.Exceptions;
+using QuizApi.Repository;
 using QuizApi.Services;
 
 namespace QuizApi.Controllers;
@@ -9,13 +11,16 @@ namespace QuizApi.Controllers;
 [Route("/api/[controller]")]
 public class QuizUploadController : ControllerBase
 {
-    private readonly QuizContext _context;
+    private readonly IRepositoryQuiz _context;
+    private readonly IMapper _mapper;
     private readonly ILogger<QuizUploadController> _logger;
 
-    public QuizUploadController(QuizContext context, ILogger<QuizUploadController> logger)
+    public QuizUploadController(IRepositoryQuiz context, ILogger<QuizUploadController> logger
+    , IMapper mapper)
     {
         _context = context;
         _logger = logger;
+        _mapper = mapper;
     }
     
     [HttpGet]
@@ -23,17 +28,16 @@ public class QuizUploadController : ControllerBase
     public IActionResult GetAll()
     {
         _logger.LogInformation("Fetching all sets");
-        var query = _context.Sets
-            .Include(x => x.FlashCards);
-        return Ok(query);
+        var allQuizzes = _context.GetAllIncludeQuestions();
+        return Ok(allQuizzes);
     }
 
     [HttpGet]
     [Route("get/{id:guid}")]
-    public async Task<IActionResult> GetById(Guid id)
+    public IActionResult GetById(Guid id)
     {
         _logger.LogInformation("Fetching a set by Id");
-        var quiz = await _context.Sets.FindAsync(id);
+        var quiz = _context.GetById(id);
         if (quiz is null) 
         {
             return NotFound();
@@ -43,38 +47,29 @@ public class QuizUploadController : ControllerBase
     
     [HttpPost]
     [Route("upload")]
-    public async Task<IActionResult> Upload(IFormFile file)
+    public IActionResult Upload(IFormFile file)
     {
         _logger.LogInformation("Importing set");
-        FlashCardSetDto model;
-        try
-        {
-            model = ParserFactory<FlashCardSetDto>.GetParser(file)
+        var model = ParserFactory<FlashCardSetDto>.GetParser(file)
                 .Parse(file);
-        }
-        catch (IncorrectFileContentException e)
-        {
-            _logger.LogError(e, "Incorrect file sent: {FileName}", file.FileName);
-            return BadRequest();
-        }
-        await _context.AddAsync(model);
-        await _context.SaveChangesAsync();
+        _context.Add(_mapper.Map<FlashCardSet>(model));
+        _context.Save();
         return CreatedAtAction(nameof(GetAll), model);
     }
 
     [HttpDelete]
     [Route("remove/{id:guid}")]
-    public async Task<IActionResult> Delete(Guid id)
+    public IActionResult Delete(Guid id)
     {
         _logger.LogInformation("Removing set {Id}", id);
-        var entity = await _context.Sets.FindAsync(id);
+        var entity = _context.GetById(id);
         if (entity is null)
         {
             _logger.LogError("Failed to remove set. Set {Id} not found", id);
             return BadRequest();
         }
-        _context.Sets.Remove(entity);
-        await _context.SaveChangesAsync();
+        _context.Remove(entity);
+        _context.Save();
         return Ok();
     }
 }
