@@ -1,12 +1,14 @@
-﻿namespace QuizApi.Repository;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace QuizApi.Repository;
 
 public class UserRepository : GenericRepository<User>, IRepositoryUser
 {
     public UserRepository(QuizContext context) : base(context) {}
 
-    public User GetByUserName(string userName) =>
-        _context.Set<User>().SingleOrDefault(u => u.UserName == userName)!;
+    public async Task<User?> GetByUserName(string userName) =>
+        await _context.Set<User>().SingleOrDefaultAsync(u => u.UserName == userName)!;
 
-    public User GetByEmail(string email) =>
-        _context.Set<User>().SingleOrDefault(u => u.Email == email)!;
+    public async Task<User?> GetByEmail(string email) =>
+        await _context.Set<User>().SingleOrDefaultAsync(u => u.Email == email)!;
 }

@@ -2,7 +2,7 @@
 
 public interface IRepositoryQuiz : IGenericRepository<FlashCardSet>
 { 
-    public IEnumerable<FlashCardSet> GetAllIncludeQuestions();
-    public IEnumerable<FlashCardSet> GetQuizByName(string name);
-    public IEnumerable<FlashCardSet> GetQuizByQuestion(string question);
+    public Task<IEnumerable<FlashCardSet>> GetAllIncludeQuestions();
+    public Task<IEnumerable<FlashCardSet>> GetQuizByName(string name);
+    public Task<IEnumerable<FlashCardSet>> GetQuizByQuestion(string question);
 }

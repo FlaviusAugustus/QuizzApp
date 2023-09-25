@@ -2,6 +2,6 @@
 
 public interface IRepositoryUser : IGenericRepository<User>
 {
-    public User GetByUserName(string userName);
-    public User GetByEmail(string email);
+    public Task<User?> GetByUserName(string userName);
+    public Task<User?> GetByEmail(string email);
 }

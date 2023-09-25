@@ -31,32 +31,32 @@ public class QuizControllerTests
         
         // Assert
         Assert.Equal(200, result.StatusCode);
-        Assert.Equal(SampleQuizzes.Sets, (List<FlashCardSet>)result.Value);
+        Assert.Equal(SampleQuizzes.Sets, (List<FlashCardSet>)result.Value!);
     }
 
     [Fact]
-    public void GetById_ProvidedInputIsCorrect_ShouldReturn200Status()
+    public async Task GetById_ProvidedInputIsCorrect_ShouldReturn200Status()
     {
         // Arrange
         var quiz = SampleQuizzes.Sets.First();
-        _service.GetById(quiz.Id).Returns(quiz);
+        _service.GetByIdAsync(quiz.Id).Returns(quiz);
         
         // Act
-        var result = (OkObjectResult)_sut.GetById(quiz.Id);
+        var result = (OkObjectResult) await _sut.GetById(quiz.Id);
         
         // Assert
         Assert.Equal(200, result.StatusCode);
-        Assert.Equal(quiz, (FlashCardSet)result.Value);
+        Assert.Equal(quiz, (FlashCardSet)result.Value!);
     }
 
     [Fact]
-    public void GetById_WithIncorrectInput_ShouldReturn404Status()
+    public async Task GetById_WithIncorrectInput_ShouldReturn404Status()
     {
         // Arrange
-        _service.GetById(Arg.Any<Guid>()).ReturnsNull();
+        _service.GetByIdAsync(Arg.Any<Guid>()).ReturnsNull();
         
         // Act
-        var result = (NotFoundObjectResult)_sut.GetById(Guid.NewGuid());
+        var result = (NotFoundObjectResult) await _sut.GetById(Guid.NewGuid());
         
         // Assert
         Assert.Equal(404, result.StatusCode);
@@ -64,17 +64,17 @@ public class QuizControllerTests
     }
 
     [Fact]
-    public void Delete_ProvidedInputIsCorrect_ShouldReturn200StatusAndRemoveQuiz()
+    public async Task Delete_ProvidedInputIsCorrect_ShouldReturn200StatusAndRemoveQuiz()
     {
         // Arrange
         var quizList = new List<FlashCardSet>(SampleQuizzes.Sets);
         var toRemove = quizList.First();
-        _service.GetById(toRemove.Id).Returns(toRemove);
+        _service.GetByIdAsync(toRemove.Id).Returns(toRemove);
         _service.When(x => x.Remove(toRemove))
                 .Do(_ => quizList.Remove(toRemove));
         
         // Act
-        var result = (OkObjectResult)_sut.Delete(toRemove.Id);
+        var result = (OkObjectResult) await _sut.Delete(toRemove.Id);
         
         // Assert
         Assert.Equal(200, result.StatusCode);
@@ -82,13 +82,13 @@ public class QuizControllerTests
     }
 
     [Fact]
-    public void Delete_WithIncorrectInput_ShouldReturn400Status()
+    public async Task Delete_WithIncorrectInput_ShouldReturn400Status()
     {
         // Arrange
-        _service.GetById(Arg.Any<Guid>()).ReturnsNull();
+        _service.GetByIdAsync(Arg.Any<Guid>()).ReturnsNull();
         
         // Act
-        var result = (BadRequestObjectResult)_sut.Delete(Guid.NewGuid());
+        var result = (BadRequestObjectResult) await _sut.Delete(Guid.NewGuid());
         
         // Assert
         Assert.Equal(400, result.StatusCode);

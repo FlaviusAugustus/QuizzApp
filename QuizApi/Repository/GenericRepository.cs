@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace QuizApi.Repository;
 
@@ -18,24 +19,24 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     public void Remove(TEntity entity) =>
         _context.Set<TEntity>().Remove(entity);
 
-    public void Save() =>
-        _context.SaveChanges();
+    public async Task SaveAsync() =>
+        await _context.SaveChangesAsync();
 
-    public void RemoveById(Guid id)
+    public async Task RemoveByIdAsync(Guid id)
     {
-        var entity = _context.Set<TEntity>().SingleOrDefault(e => e.Id == id);
+        var entity = await _context.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id);
         if (entity is not null)
         {
             _context.Remove(entity);
         }
     }
+    
+    public async Task<TEntity?> GetByIdAsync(Guid id) =>
+        await _context.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id);
 
-    public TEntity GetById(Guid id) =>
-        _context.Set<TEntity>().SingleOrDefault(e => e.Id == id)!;
+    public async Task<IEnumerable<TEntity>> GetAllAsync() =>
+        await _context.Set<TEntity>().ToListAsync();
 
-    public IEnumerable<TEntity> GetAll() =>
-        _context.Set<TEntity>().AsEnumerable();
-
-    public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression) =>
-        _context.Set<TEntity>().Where(expression);
+    public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> expression) =>
+        await _context.Set<TEntity>().Where(expression).ToListAsync();
 }
