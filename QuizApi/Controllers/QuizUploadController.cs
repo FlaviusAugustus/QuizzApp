@@ -40,7 +40,7 @@ public class QuizUploadController : ControllerBase
         var quiz = _context.GetById(id);
         if (quiz is null) 
         {
-            return NotFound();
+            return NotFound(quiz);
         }
         return Ok(quiz);
     } 
@@ -66,10 +66,10 @@ public class QuizUploadController : ControllerBase
         if (entity is null)
         {
             _logger.LogError("Failed to remove set. Set {Id} not found", id);
-            return BadRequest();
+            return BadRequest(entity);
         }
         _context.Remove(entity);
         _context.Save();
-        return Ok();
+        return Ok(entity);
     }
 }
