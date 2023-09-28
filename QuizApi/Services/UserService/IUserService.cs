@@ -1,8 +1,12 @@
-﻿namespace QuizApi.Services.UserService;
+﻿using LanguageExt;
+using LanguageExt.Common;
+using QuizApi.Constants;
+
+namespace QuizApi.Services.UserService;
 
 public interface IUserService
 {
-    Task<string> RegisterAsync(RegisterModel registerModel);
-    Task<AuthModel> GetTokenAsync(TokenRequestModel requestModel);
-    Task<string> AddToRoleAsync(AddRoleModel roleModel);
-}
+    Task<Result<User>> RegisterAsync(RegisterModel registerModel);
+    Task<Result<AuthModel>> GetTokenAsync(TokenRequestModel requestModel);
+    Task<Result<Unit>> AddToRoleAsync(AddRoleModel roleModel);
+} 

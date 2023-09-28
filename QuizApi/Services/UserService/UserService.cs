@@ -1,10 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using LanguageExt;
+using LanguageExt.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using QuizApi.Constants;
+using QuizApi.Services.DateTimeProvider;
 using QuizApi.Settings;
 
 namespace QuizApi.Services.UserService;
@@ -13,89 +16,105 @@ public class UserService : IUserService
 {
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly JWT _jwtConfig;
 
     public UserService(UserManager<User> userManager,
-        RoleManager<IdentityRole<Guid>> roleManager, IOptions<JWT> jwt) =>
-        (_userManager, _roleManager, _jwtConfig) = (userManager, roleManager, jwt.Value);
+        RoleManager<IdentityRole<Guid>> roleManager, IOptions<JWT> jwt,
+        IDateTimeProvider dateTimeProvider) =>
+        (_userManager, _roleManager, _jwtConfig, _dateTimeProvider) = (userManager, roleManager, jwt.Value, dateTimeProvider);
 
-    public async Task<string> AddToRoleAsync(AddRoleModel roleModel)
+    public async Task<Result<Unit>> AddToRoleAsync(AddRoleModel roleModel)
     {
         var user = await _userManager.FindByNameAsync(roleModel.UserName);
         if (user is null)
         {
-            return $"User {user.UserName} doesn't exist";
+            var error = new ArgumentException($"User {roleModel.UserName} doesn't exist");
+            return new Result<Unit>(error);
         }
         if (await _userManager.CheckPasswordAsync(user, roleModel.Password))
         {
-            var roleLower = roleModel.Role.ToLower();
-            var roleExists = Enum.GetValues(typeof(Roles))
-                .Cast<Roles>()
-                .Any(role => roleLower == role.ToString().ToLower());
-            if (roleExists)
-            {
-                var role = Enum.GetValues<Roles>().First(role => role.ToString().ToLower() == roleLower);
-                await _userManager.AddToRoleAsync(user, role.ToString());
-                return $"Added {roleModel.Role} to user {roleModel.UserName}";
-            }
+            return await AddUserToRole(user, roleModel.Role); 
         }
-        return $"Invalid credentials for user {roleModel.UserName}";
+        var e = new ArgumentException($"Invalid credentials for user {roleModel.UserName}");
+        return new Result<Unit>(e);
     }
 
-    public async Task<AuthModel> GetTokenAsync(TokenRequestModel requestModel)
+    private async Task<Result<Unit>> AddUserToRole(User user, string requestedRole)
     {
-        var authModel = new AuthModel();
+        if (Enum.TryParse<Roles>(requestedRole, out var role))
+        {
+            await _userManager.AddToRoleAsync(user, role.ToString());
+            return new Result<Unit>();
+        }
+
+        var invalidRoleException = new ArgumentException($"No existing role: {role}");
+        return new Result<Unit>(invalidRoleException);
+    }
+
+    public async Task<Result<AuthModel>> GetTokenAsync(TokenRequestModel requestModel)
+    {
         var user = await _userManager.FindByEmailAsync(requestModel.Email);
         if (user is null)
         {
-            authModel.IsAuthenticated = false;
-            authModel.Message = $"No accounts with Email: {authModel.Email}";
-            return authModel;
+            var noAccountError = new ArgumentException($"No accounts with Email: {requestModel.Email}");
+            return new Result<AuthModel>(noAccountError);
         }
 
         if (await _userManager.CheckPasswordAsync(user, requestModel.Password))
         {
-            authModel.IsAuthenticated = true;
-            var securityToken = await CreateJwtToken(user);
-            authModel.Token = new JwtSecurityTokenHandler().WriteToken(securityToken);
-            authModel.Email = user.Email;
-            authModel.UserName = user.UserName;
-            var roles = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
-            authModel.Roles = roles.ToList();
-            return authModel;
+            var token = await CreateTokenForUser(user);
+            return new Result<AuthModel>(token);
         }
-        authModel.IsAuthenticated = false;
-        authModel.Message = "Invalid Credentials";
-        return authModel;
+        
+        var invalidCredentialsError = new ArgumentException($"Invalid Credentials for user {user.UserName}");
+        return new Result<AuthModel>(invalidCredentialsError);
+    }
+
+    private async Task<AuthModel> CreateTokenForUser(User user)
+    {
+        var roles = await _userManager.GetRolesAsync(user);
+        return new AuthModel
+        {
+            IsAuthenticated = true,
+            Token = new JwtSecurityTokenHandler().WriteToken(await CreateJwtToken(user)),
+            Email = user.Email,
+            UserName = user.UserName,
+            Roles = roles.ToList(),
+        };
     }
 
     private async Task<JwtSecurityToken> CreateJwtToken(User user)
     {
-        var userClaims = await _userManager.GetClaimsAsync(user);
-        var roles = await _userManager.GetRolesAsync(user);
-        var roleClaims = roles.Select(j => new Claim("roles", j)).ToList();
-
-        var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim("uid", user.Id.ToString())
-        }.Union(userClaims).Union(roleClaims);
-
+        var claims = await CreateClaims(user);
         var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
         var signingCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256Signature);
+        var expires = _dateTimeProvider.GetCurrentTime().AddMinutes(_jwtConfig.DurationInMinutes);
 
-        var jwtSecurityToken = new JwtSecurityToken(
+        return new JwtSecurityToken(
             issuer: _jwtConfig.Issuer,
             audience: _jwtConfig.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwtConfig.DurationInMinutes),
+            expires: expires,
             signingCredentials: signingCredentials);
-        return jwtSecurityToken;
     }
 
-    public async Task<string> RegisterAsync(RegisterModel registerModel)
+    private async Task<IEnumerable<Claim>> CreateClaims(User user)
+    {
+        var userClaims = await _userManager.GetClaimsAsync(user);
+        var roles = await _userManager.GetRolesAsync(user);
+        var roleClaims = roles.Select(j => new Claim("roles", j));
+
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        };
+        
+        return claims.Union(userClaims).Union(roleClaims);
+    }
+
+    public async Task<Result<User>> RegisterAsync(RegisterModel registerModel)
     {
         var user = new User
         {
@@ -104,22 +123,25 @@ public class UserService : IUserService
             FirstName = registerModel.FirstName,
             Password = registerModel.Password
         };
-        if (!await IsUserDataAvailable(user)) 
+        if (await IsUserDataTaken(user))
         {
-            return "Invalid credentials";
-        }            
+            var credentialsError = new ArgumentException("Invalid Credentials");
+            return new Result<User>(credentialsError);
+        }
+        
         var result = await _userManager.CreateAsync(user, registerModel.Password);
         if (result.Succeeded)
         {
-            //await _userManager.AddToRoleAsync(user, Roles.User.ToString());
-            return $"Account with username: {user.UserName} has been created";
+            return new Result<User>(user);
         }
-        return "Failed";
+        
+        var creationError = new ArgumentException($"Couldn't create user {user.UserName}");
+        return new Result<User>(creationError);
     }
 
-    private async Task<bool> IsUserDataAvailable(User user)
+    private async Task<bool> IsUserDataTaken(User user)
     {
         var sameEmail = await  _userManager.FindByEmailAsync(user.Email);
-        return sameEmail is null;
+        return sameEmail is not null;
     }
 }

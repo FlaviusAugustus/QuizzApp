@@ -9,13 +9,13 @@ namespace QuizApi.Controllers;
 
 [ApiController]
 [Route("/api/[controller]")]
-public class QuizUploadController : ControllerBase
+public class QuizController : ControllerBase
 {
     private readonly IRepositoryQuiz _context;
     private readonly IMapper _mapper;
-    private readonly ILogger<QuizUploadController> _logger;
+    private readonly ILogger<QuizController> _logger;
 
-    public QuizUploadController(IRepositoryQuiz context, ILogger<QuizUploadController> logger
+    public QuizController(IRepositoryQuiz context, ILogger<QuizController> logger
     , IMapper mapper)
     {
         _context = context;

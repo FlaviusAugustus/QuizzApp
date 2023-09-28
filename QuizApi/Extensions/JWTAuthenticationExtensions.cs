@@ -5,7 +5,7 @@ using QuizApi.Settings;
 
 namespace QuizApi.Extensions;
 
-public static class JWTAuthenticationExtensions
+public static class JwtAuthenticationExtensions
 {
     public static IServiceCollection ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration config)
     {

@@ -17,7 +17,9 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> RegisterAsync(RegisterModel registerModel)
     {
         var result = await _userService.RegisterAsync(registerModel);
-        return Ok(result);
+        return result.Match<IActionResult>(
+            success => Ok(success),
+            fail => BadRequest(fail.Message));
     }
 
     [HttpPost]
@@ -25,7 +27,9 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> LoginAsync(TokenRequestModel requestModel)
     {
         var result = await _userService.GetTokenAsync(requestModel);
-        return Ok(result.Token);
+        return result.Match<IActionResult>(
+            success => success is null ? NotFound() : Ok(success),
+            fail => BadRequest(fail.Message));
     }
 
     [HttpPost]
@@ -33,6 +37,8 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> AddToRole(AddRoleModel roleModel)
     {
         var result = await _userService.AddToRoleAsync(roleModel);
-        return Ok(result);
+        return result.Match<IActionResult>(
+            success => Ok(),
+            fail => BadRequest(fail.Message));
     }
 }

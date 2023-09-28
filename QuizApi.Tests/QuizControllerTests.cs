@@ -11,9 +11,9 @@ namespace QuizApi.Tests;
 public class QuizControllerTests
 {
     private readonly IRepositoryQuiz _service = Substitute.For<IRepositoryQuiz>();
-    private readonly ILogger<QuizUploadController> _logger = Substitute.For<ILogger<QuizUploadController>>();
+    private readonly ILogger<QuizController> _logger = Substitute.For<ILogger<QuizController>>();
     private readonly IMapper _mapper = Substitute.For<IMapper>();
-    private readonly QuizUploadController _sut;
+    private readonly QuizController _sut;
 
     public QuizControllerTests()
     {
