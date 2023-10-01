@@ -32,23 +32,22 @@ public class UserService : IUserService
             var error = new ArgumentException($"User {roleModel.UserName} doesn't exist");
             return new Result<Unit>(error);
         }
-        if (await _userManager.CheckPasswordAsync(user, roleModel.Password))
-        {
-            return await AddUserToRole(user, roleModel.Role); 
-        }
-        var e = new ArgumentException($"Invalid credentials for user {roleModel.UserName}");
-        return new Result<Unit>(e);
+        
+        return await AddUserToRole(user, roleModel.Role); 
     }
 
     private async Task<Result<Unit>> AddUserToRole(User user, string requestedRole)
     {
         if (Enum.TryParse<Roles>(requestedRole, out var role))
         {
-            await _userManager.AddToRoleAsync(user, role.ToString());
+            if (!await _userManager.IsInRoleAsync(user, requestedRole))
+            {
+                await _userManager.AddToRoleAsync(user, requestedRole);
+            }
             return new Result<Unit>();
         }
 
-        var invalidRoleException = new ArgumentException($"No existing role: {role}");
+        var invalidRoleException = new ArgumentException($"No existing role: {requestedRole}");
         return new Result<Unit>(invalidRoleException);
     }
 
@@ -120,8 +119,7 @@ public class UserService : IUserService
         {
             UserName = registerModel.UserName,
             Email = registerModel.Email,
-            FirstName = registerModel.FirstName,
-            Password = registerModel.Password
+            CreatedAt = _dateTimeProvider.GetCurrentTime()
         };
         if (await IsUserDataTaken(user))
         {

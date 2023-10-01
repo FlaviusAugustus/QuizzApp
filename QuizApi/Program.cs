@@ -1,4 +1,5 @@
 using QuizApi.Extensions;
+using QuizApi.Services.DateTimeProvider;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,10 @@ builder.Services.ConfigureJwtAuthentication(builder.Configuration);
 builder.Services.ConfigureMapper();
 
 builder.Services.AddSwaggerGen();
+
+await builder.Services.AddRoles();
+
+builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
 var app = builder.Build();
 

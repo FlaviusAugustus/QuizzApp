@@ -98,3 +98,5 @@ C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\Microsoft.Identity
 C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\NuGet.Frameworks.dll
+C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\LanguageExt.Core.dll
+C:\Users\gracj\RiderProjects\QuizApi\QuizApi\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll

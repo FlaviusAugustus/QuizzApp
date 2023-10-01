@@ -15,14 +15,12 @@ public static class AddAdminExtension
         {
             UserName = config["UserName"],
             Email = config["Email"],
-            FirstName = "Admin",
             Password = config["Password"]
         };
         service.RegisterAsync(admin);
         var roleAdmin = new AddRoleModel
         {
             UserName = config["UserName"],
-            Password = config["Password"],
             Role = Roles.Admin.ToString()
         };
     }
