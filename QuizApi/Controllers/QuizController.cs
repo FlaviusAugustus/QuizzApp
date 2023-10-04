@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using QuizApi.Exceptions;
 using QuizApi.Repository;
 using QuizApi.Services;
+using QuizApi.Services.QuizService;
 
 namespace QuizApi.Controllers;
 
@@ -11,24 +12,18 @@ namespace QuizApi.Controllers;
 [Route("/api/[controller]")]
 public class QuizController : ControllerBase
 {
-    private readonly IRepositoryQuiz _context;
-    private readonly IMapper _mapper;
-    private readonly ILogger<QuizController> _logger;
+    private readonly IQuizService _quizService;
 
-    public QuizController(IRepositoryQuiz context, ILogger<QuizController> logger
-    , IMapper mapper)
+    public QuizController(IQuizService service)
     {
-        _context = context;
-        _logger = logger;
-        _mapper = mapper;
+        _quizService = service;
     }
     
     [HttpGet]
     [Route("get")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        _logger.LogInformation("Fetching all sets");
-        var allQuizzes = _context.GetAllIncludeQuestions();
+        var allQuizzes = await _quizService.GetAllQuizzesAsync();
         return Ok(allQuizzes);
     }
 
@@ -36,40 +31,32 @@ public class QuizController : ControllerBase
     [Route("get/{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        _logger.LogInformation("Fetching a set by Id");
-        var quiz = await _context.GetByIdAsync(id);
-        if (quiz is null) 
-        {
-            return NotFound(quiz);
-        }
-        return Ok(quiz);
+        var result = await _quizService.GetQuizAsync(id);
+        return result.Match<IActionResult>(
+            success => Ok(success),
+            fail => NotFound(fail.Message)
+        );
     } 
     
     [HttpPost]
     [Route("upload")]
     public async Task<IActionResult> Upload(IFormFile file)
     {
-        _logger.LogInformation("Importing set");
-        var model = ParserFactory<FlashCardSetDto>.GetParser(file)
-                .Parse(file);
-        _context.Add(_mapper.Map<FlashCardSet>(model));
-        await _context.SaveAsync();
-        return CreatedAtAction(nameof(GetAll), model);
+        var result = await _quizService.CreateQuizFromFileAsync(file);
+        return result.Match<IActionResult>(
+            success => CreatedAtAction(nameof(GetAll), success),
+            fail => BadRequest(fail.Message)
+        );
     }
 
     [HttpDelete]
     [Route("remove/{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        _logger.LogInformation("Removing set {Id}", id);
-        var entity = await _context.GetByIdAsync(id);
-        if (entity is null)
-        {
-            _logger.LogError("Failed to remove set. Set {Id} not found", id);
-            return BadRequest(entity);
-        }
-        _context.Remove(entity);
-        await _context.SaveAsync();
-        return Ok(entity);
+        var result = await _quizService.RemoveQuizAsync(id);
+        return result.Match<IActionResult>(
+            success => Ok(),
+            fail => NotFound(fail.Message)
+            );
     }
 }

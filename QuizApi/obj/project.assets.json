@@ -5242,19 +5242,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gracj\\.nuget\\packages\\": {}
+    "/home/gracjangrzech/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gracj\\RiderProjects\\QuizApi\\QuizApi\\QuizApi.csproj",
+      "projectUniqueName": "/home/gracjangrzech/RiderProjects/QuizzApp/QuizApi/QuizApi.csproj",
       "projectName": "QuizApi",
-      "projectPath": "C:\\Users\\gracj\\RiderProjects\\QuizApi\\QuizApi\\QuizApi.csproj",
-      "packagesPath": "C:\\Users\\gracj\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gracj\\RiderProjects\\QuizApi\\QuizApi\\obj\\",
+      "projectPath": "/home/gracjangrzech/RiderProjects/QuizzApp/QuizApi/QuizApi.csproj",
+      "packagesPath": "/home/gracjangrzech/.nuget/packages/",
+      "outputPath": "/home/gracjangrzech/RiderProjects/QuizzApp/QuizApi/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\gracj\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/gracjangrzech/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -5358,19 +5358,7 @@
         "warn": true,
         "downloadDependencies": [
           {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.21, 6.0.21]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[6.0.21, 6.0.21]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.21, 6.0.21]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "name": "Microsoft.NETCore.App.Host.linux-x64",
             "version": "[6.0.21, 6.0.21]"
           }
         ],
@@ -5382,7 +5370,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/7.0.110/RuntimeIdentifierGraph.json"
       }
     }
   }

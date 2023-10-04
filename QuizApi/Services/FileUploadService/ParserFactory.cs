@@ -2,13 +2,13 @@
 
 namespace QuizApi.Services;
 
-public static class ParserFactory<T> where T : class, new()
+public class ParserFactory<T> : IParserFactory<T> where T : class, new()
 {
-    public static IFileParser<T> GetParser(IFormFile file) => Path.GetExtension(file.FileName) switch 
+    public IFileParser<T> GetParser(IFormFile file) => Path.GetExtension(file.FileName) switch 
     { 
         ".json" => new JsonParser<T>(),
         ".toml" => new TomlParser<T>(),
         ".yaml" => new YamlParser<T>(),
-        _ => throw new IncorrectFileContentException(file.FileName)
+        _ => throw new ArgumentException(file.FileName)
     };
 }
