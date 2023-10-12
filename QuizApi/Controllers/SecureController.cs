@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using QuizApi.Constants;
 
 namespace QuizApi.Controllers;
 
@@ -15,7 +16,7 @@ public class SecureController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = nameof(Policies.CanAccessSecureController))]
     public async Task<IActionResult> PostData()
     {
         return Ok("secure data bro");

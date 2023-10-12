@@ -1,4 +1,5 @@
 using QuizApi;
+using QuizApi.Constants;
 using QuizApi.Extensions;
 using QuizApi.Services;
 using QuizApi.Services.DateTimeProvider;
@@ -14,7 +15,10 @@ builder.Services.ConfigureDb(builder.Configuration);
 
 builder.Services.ConfigureJwtAuthentication(builder.Configuration);
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddAuthorization(opts =>
+{
+    opts.AddPolicy(nameof(Policies.CanAccessSecureController), policy => policy.RequireRole(nameof(Roles.Admin)));
+});
 
 await builder.Services.AddRoles();
 
@@ -23,6 +27,8 @@ builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 builder.Services.AddScoped<IQuizService, QuizService>();
 
 builder.Services.AddScoped<IParserFactory<FlashCardSet>, ParserFactory<FlashCardSet>>();
+
+builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
 

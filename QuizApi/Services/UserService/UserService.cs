@@ -40,15 +40,19 @@ public class UserService : IUserService
     {
         if (Enum.TryParse<Roles>(requestedRole, out var role))
         {
-            if (!await _userManager.IsInRoleAsync(user, requestedRole))
-            {
-                await _userManager.AddToRoleAsync(user, requestedRole);
-            }
-            return new Result<Unit>();
+            await AddUserToRole(user, role);
         }
 
         var invalidRoleException = new ArgumentException($"No existing role: {requestedRole}");
         return new Result<Unit>(invalidRoleException);
+    }
+
+    private async Task AddUserToRole(User user, Roles role)
+    {
+        if (!await _userManager.IsInRoleAsync(user, role.ToString()))
+        {
+            await _userManager.AddToRoleAsync(user, role.ToString());
+        }
     }
 
     public async Task<Result<AuthModel>> GetTokenAsync(TokenRequestModel requestModel)
@@ -119,7 +123,7 @@ public class UserService : IUserService
         {
             UserName = registerModel.UserName,
             Email = registerModel.Email,
-            CreatedAt = _dateTimeProvider.GetCurrentTime()
+            CreatedAt = _dateTimeProvider.GetCurrentTime(),
         };
         if (await IsUserDataTaken(user))
         {
@@ -128,6 +132,7 @@ public class UserService : IUserService
         }
         
         var result = await _userManager.CreateAsync(user, registerModel.Password);
+        await AddUserToRole(user, Roles.User);
         if (result.Succeeded)
         {
             return new Result<User>(user);
