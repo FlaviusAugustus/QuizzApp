@@ -17,7 +17,8 @@ builder.Services.ConfigureJwtAuthentication(builder.Configuration);
 
 builder.Services.AddAuthorization(opts =>
 {
-    opts.AddPolicy(nameof(Policies.CanAccessSecureController), policy => policy.RequireRole(nameof(Roles.Admin)));
+    opts.AddPolicy(nameof(Policy.CanAccessSecureController), policy => policy.RequireRole(nameof(Role.Admin)));
+    opts.AddPolicy(nameof(Policy.CanManageRoles), policy => policy.RequireRole(nameof(Role.Admin)));
 });
 
 await builder.Services.AddRoles();

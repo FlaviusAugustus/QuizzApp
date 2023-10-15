@@ -24,30 +24,44 @@ public class UserService : IUserService
         IDateTimeProvider dateTimeProvider) =>
         (_userManager, _roleManager, _jwtConfig, _dateTimeProvider) = (userManager, roleManager, jwt.Value, dateTimeProvider);
 
-    public async Task<Result<Unit>> AddToRoleAsync(AddRoleModel roleModel)
+    public async Task<Result<Unit>> RemoveRoleAsync(ManageRoleModel roleModel)
     {
         var user = await _userManager.FindByNameAsync(roleModel.UserName);
+        return await ManageRole(user, roleModel, RemoveUserFromRole);
+    }
+    
+    public async Task<Result<Unit>> AddToRoleAsync(ManageRoleModel roleModel)
+    {
+        var user = await _userManager.FindByNameAsync(roleModel.UserName);
+        return await ManageRole(user, roleModel, AddUserToRole); 
+    }
+
+    private static async Task<Result<Unit>> ManageRole(User? user, ManageRoleModel roleModel, Func<User, Role, Task> roleManager)
+    {
         if (user is null)
         {
             var error = new ArgumentException($"User {roleModel.UserName} doesn't exist");
             return new Result<Unit>(error);
         }
         
-        return await AddUserToRole(user, roleModel.Role); 
-    }
-
-    private async Task<Result<Unit>> AddUserToRole(User user, string requestedRole)
-    {
-        if (Enum.TryParse<Roles>(requestedRole, out var role))
+        if (Enum.TryParse<Role>(roleModel.Role, out var role))
         {
-            await AddUserToRole(user, role);
+            await roleManager(user, role);
+            return new Result<Unit>();
         }
-
-        var invalidRoleException = new ArgumentException($"No existing role: {requestedRole}");
+        var invalidRoleException = new ArgumentException($"No existing role: {roleModel.Role}");
         return new Result<Unit>(invalidRoleException);
     }
 
-    private async Task AddUserToRole(User user, Roles role)
+    private async Task RemoveUserFromRole(User user, Role role)
+    {
+        if (await _userManager.IsInRoleAsync(user, role.ToString()))
+        {
+            await _userManager.RemoveFromRoleAsync(user, role.ToString());
+        }
+    }
+
+    private async Task AddUserToRole(User user, Role role)
     {
         if (!await _userManager.IsInRoleAsync(user, role.ToString()))
         {
@@ -132,7 +146,7 @@ public class UserService : IUserService
         }
         
         var result = await _userManager.CreateAsync(user, registerModel.Password);
-        await AddUserToRole(user, Roles.User);
+        await AddUserToRole(user, Role.User);
         if (result.Succeeded)
         {
             return new Result<User>(user);

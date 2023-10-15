@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using QuizApi.Constants;
 using QuizApi.Services.UserService;
 
 namespace QuizApi.Controllers;
@@ -35,11 +36,24 @@ public class AccountController : ControllerBase
 
     [HttpPost]
     [Route("add-role")]
-    public async Task<IActionResult> AddToRole(AddRoleModel roleModel)
+    [Authorize(Policy = nameof(Policy.CanManageRoles))]
+    public async Task<IActionResult> AddToRole(ManageRoleModel roleModel)
     {
         var result = await _userService.AddToRoleAsync(roleModel);
         return result.Match<IActionResult>(
             success => Ok(),
             fail => BadRequest(fail.Message));
+    }
+
+    [HttpPost]
+    [Route("remove-role")]
+    [Authorize(Policy = nameof(Policy.CanManageRoles))]
+    public async Task<IActionResult> RemoveRole(ManageRoleModel roleModel)
+    {
+        var result = await _userService.RemoveRoleAsync(roleModel);
+        return result.Match<IActionResult>(
+            success => Ok(),
+            fail => BadRequest(fail.Message)
+        );
     }
 }

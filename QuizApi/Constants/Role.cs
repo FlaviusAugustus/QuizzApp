@@ -1,7 +1,8 @@
 ﻿namespace QuizApi.Constants;
 
-public enum Roles
+public enum Role
 {
     User,
-    Admin
+    Admin,
+    Moderator
 }

@@ -8,5 +8,6 @@ public interface IUserService
 {
     Task<Result<User>> RegisterAsync(RegisterModel registerModel);
     Task<Result<AuthModel>> GetTokenAsync(TokenRequestModel requestModel);
-    Task<Result<Unit>> AddToRoleAsync(AddRoleModel roleModel);
+    Task<Result<Unit>> AddToRoleAsync(ManageRoleModel roleModel);
+    Task<Result<Unit>> RemoveRoleAsync(ManageRoleModel roleModel);
 } 

@@ -8,7 +8,7 @@ public static class RolesExtensions
     public static async Task AddRoles(this IServiceCollection services)
     {
         var roleManager = services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole<Guid>>>();
-        foreach (var role in Enum.GetNames<Roles>())
+        foreach (var role in Enum.GetNames<Role>())
         {
             if (!await roleManager.RoleExistsAsync(role))
             {

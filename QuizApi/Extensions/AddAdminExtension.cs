@@ -18,10 +18,10 @@ public static class AddAdminExtension
             Password = config["Password"]
         };
         service.RegisterAsync(admin);
-        var roleAdmin = new AddRoleModel
+        var roleAdmin = new ManageRoleModel
         {
             UserName = config["UserName"],
-            Role = Roles.Admin.ToString()
+            Role = Role.Admin.ToString()
         };
     }
 }

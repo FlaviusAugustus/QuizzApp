@@ -16,7 +16,7 @@ public class SecureController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = nameof(Policies.CanAccessSecureController))]
+    [Authorize(Policy = nameof(Policy.CanAccessSecureController))]
     public async Task<IActionResult> PostData()
     {
         return Ok("secure data bro");
